@@ -1,8 +1,7 @@
 
 import React from 'react';
-import { View } from 'react-native';
+import { Slot } from 'expo-router';
 import FloatingTabBar from '@/components/FloatingTabBar';
-import { colors } from '@/styles/commonStyles';
 
 export default function TabLayout() {
   const tabs = [
@@ -24,7 +23,7 @@ export default function TabLayout() {
 
   return (
     <>
-      <View style={{ flex: 1 }} />
+      <Slot />
       <FloatingTabBar tabs={tabs} />
     </>
   );
