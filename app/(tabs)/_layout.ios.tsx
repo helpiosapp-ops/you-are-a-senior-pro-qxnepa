@@ -7,17 +7,15 @@ export default function TabLayout() {
   const tabs = [
     {
       name: 'Home',
-      title: 'Home',
+      label: 'Home',
       route: '/(tabs)/(home)',
-      ios_icon_name: 'house.fill',
-      android_material_icon_name: 'home',
+      icon: 'home',
     },
     {
       name: 'Plan',
-      title: 'Plan',
+      label: 'Plan',
       route: '/(tabs)/plan',
-      ios_icon_name: 'checklist',
-      android_material_icon_name: 'assignment',
+      icon: 'assignment',
     },
   ];
 
