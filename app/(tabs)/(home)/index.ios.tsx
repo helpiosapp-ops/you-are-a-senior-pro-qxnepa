@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
 import { useExitPlan } from '@/hooks/useExitPlan';
 import { PathCard } from '@/components/PathCard';
@@ -25,7 +25,7 @@ const paths = [
     id: 'negotiated' as ExitPath,
     title: 'Negotiated Exit',
     description: 'Discussing mutual separation terms',
-    icon: 'handshake',
+    icon: 'description',
   },
   {
     id: 'career-break' as ExitPath,
@@ -39,12 +39,14 @@ export default function HomeScreen() {
   const { data, loading, selectPath, getProgress } = useExitPlan();
 
   const selectedPath = data.selectedPath;
-  const progress = getProgress();
+  const progressValue = getProgress();
 
   const handleSelectPath = (path: ExitPath) => {
     console.log('User tapped path card:', path);
     selectPath(path);
   };
+
+  const progressPercent = Math.round(progressValue);
 
   return (
     <>
@@ -70,10 +72,10 @@ export default function HomeScreen() {
           <View style={styles.progressCard}>
             <View style={styles.progressHeader}>
               <Text style={styles.progressTitle}>Your Progress</Text>
-              <Text style={styles.progressPercent}>{progress}%</Text>
+              <Text style={styles.progressPercent}>{progressPercent}%</Text>
             </View>
             <View style={styles.progressBarContainer}>
-              <View style={[styles.progressBar, { width: `${progress}%` }]} />
+              <View style={[styles.progressBar, { width: `${progressPercent}%` }]} />
             </View>
             <Text style={styles.progressLabel}>
               Keep going. Take your time with each step.
@@ -87,15 +89,16 @@ export default function HomeScreen() {
             Choose the scenario that best matches your situation
           </Text>
           {paths.map((path) => (
-            <PathCard
-              key={path.id}
-              path={path.id}
-              title={path.title}
-              description={path.description}
-              iconName={path.icon}
-              selected={selectedPath === path.id}
-              onPress={() => handleSelectPath(path.id)}
-            />
+            <React.Fragment key={path.id}>
+              <PathCard
+                path={path.id}
+                title={path.title}
+                description={path.description}
+                iconName={path.icon}
+                selected={selectedPath === path.id}
+                onPress={() => handleSelectPath(path.id)}
+              />
+            </React.Fragment>
           ))}
         </View>
 

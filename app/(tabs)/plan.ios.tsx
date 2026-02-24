@@ -16,7 +16,7 @@ export default function PlanScreen() {
   const [isExporting, setIsExporting] = useState(false);
 
   const selectedPath = data.selectedPath;
-  const progress = getProgress();
+  const progressValue = getProgress();
 
   const handleNotesChange = (text: string) => {
     setNotes(text);
@@ -55,6 +55,7 @@ export default function PlanScreen() {
       const pathTitle = pathTitles[selectedPath];
       const completedItems = data.checklist.filter(item => item.completed);
       const totalItems = data.checklist.length;
+      const progressPercent = Math.round(progressValue);
 
       const checklistHTML = Object.entries(groupedChecklist)
         .map(([category, items]) => {
@@ -138,7 +139,7 @@ export default function PlanScreen() {
             </div>
 
             <div class="progress">
-              <strong>Progress:</strong> ${completedItems.length} of ${totalItems} items completed (${progress}%)
+              <strong>Progress:</strong> ${completedItems.length} of ${totalItems} items completed (${progressPercent}%)
             </div>
 
             <h2>Preparation Checklist</h2>
@@ -225,7 +226,7 @@ export default function PlanScreen() {
         <View style={styles.header}>
           <Text style={styles.title}>Your Exit Plan</Text>
           <TouchableOpacity
-            style={[commonStyles.button, isExporting && styles.buttonDisabled]}
+            style={[styles.exportButton, isExporting && styles.buttonDisabled]}
             onPress={handleExportPDF}
             disabled={isExporting}
             activeOpacity={0.7}
@@ -237,7 +238,7 @@ export default function PlanScreen() {
               color={colors.card}
               style={styles.buttonIcon}
             />
-            <Text style={commonStyles.buttonText}>
+            <Text style={styles.exportButtonText}>
               {isExporting ? 'Exporting...' : 'Export PDF'}
             </Text>
           </TouchableOpacity>
@@ -246,32 +247,37 @@ export default function PlanScreen() {
         <View style={styles.infoCard}>
           <Text style={styles.infoTitle}>Common Mistakes to Avoid</Text>
           {pathInfo.mistakes.map((mistake, index) => (
-            <View key={index} style={styles.infoItem}>
-              <Text style={styles.bullet}>•</Text>
-              <Text style={styles.infoText}>{mistake}</Text>
-            </View>
+            <React.Fragment key={index}>
+              <View style={styles.infoItem}>
+                <Text style={styles.bullet}>•</Text>
+                <Text style={styles.infoText}>{mistake}</Text>
+              </View>
+            </React.Fragment>
           ))}
         </View>
 
         <View style={styles.infoCard}>
           <Text style={styles.infoTitle}>Key Considerations</Text>
           {pathInfo.considerations.map((consideration, index) => (
-            <View key={index} style={styles.infoItem}>
-              <Text style={styles.bullet}>•</Text>
-              <Text style={styles.infoText}>{consideration}</Text>
-            </View>
+            <React.Fragment key={index}>
+              <View style={styles.infoItem}>
+                <Text style={styles.bullet}>•</Text>
+                <Text style={styles.infoText}>{consideration}</Text>
+              </View>
+            </React.Fragment>
           ))}
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Preparation Checklist</Text>
           {Object.entries(groupedChecklist).map(([category, items]) => (
-            <ChecklistSection
-              key={category}
-              category={category}
-              items={items}
-              onToggle={toggleChecklistItem}
-            />
+            <React.Fragment key={category}>
+              <ChecklistSection
+                category={category}
+                items={items}
+                onToggle={toggleChecklistItem}
+              />
+            </React.Fragment>
           ))}
         </View>
 
@@ -308,6 +314,20 @@ const styles = StyleSheet.create({
     ...typography.h1,
     color: colors.text,
     marginBottom: spacing.lg,
+  },
+  exportButton: {
+    backgroundColor: colors.primary,
+    borderRadius: 12,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  exportButtonText: {
+    ...typography.body,
+    color: colors.card,
+    fontWeight: '600',
   },
   buttonDisabled: {
     opacity: 0.5,
