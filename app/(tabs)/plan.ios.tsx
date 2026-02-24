@@ -62,27 +62,29 @@ export default function PlanScreen() {
           const itemsHTML = items
             .map(
               item => `
-              <div style="margin-bottom: 10px; display: flex; align-items: flex-start; page-break-inside: avoid;">
-                <span style="margin-right: 10px; font-size: 16px; flex-shrink: 0;">${item.completed ? '✓' : '○'}</span>
-                <span style="color: ${item.completed ? '#6B6B6B' : '#2C2C2C'}; font-size: 14px; line-height: 1.5;">${item.text}</span>
+              <div class="checklist-item">
+                <span class="checkbox">${item.completed ? '✓' : '○'}</span>
+                <span class="item-text">${item.text}</span>
               </div>
             `
             )
             .join('');
 
           return `
-            <div style="margin-bottom: 30px; page-break-inside: avoid;">
-              <h3 style="color: #7A9B8E; margin-bottom: 15px; font-size: 18px; font-weight: 600;">${category}</h3>
-              ${itemsHTML}
+            <div class="category-section">
+              <h3>${category}</h3>
+              <div class="items-container">
+                ${itemsHTML}
+              </div>
             </div>
           `;
         })
         .join('');
 
       const notesHTML = notes ? `
-        <div style="page-break-before: auto; margin-top: 30px;">
-          <h2 style="color: #2C2C2C; margin-bottom: 16px; font-size: 24px; font-weight: 600;">Personal Notes</h2>
-          <div style="background-color: #F8F7F5; padding: 16px; border-radius: 8px; white-space: pre-wrap; font-size: 14px; line-height: 1.6;">${notes.replace(/\n/g, '<br/>')}</div>
+        <div class="notes-section">
+          <h2>Personal Notes</h2>
+          <div class="notes-content">${notes.replace(/\n/g, '<br/>')}</div>
         </div>
       ` : '';
 
@@ -101,12 +103,12 @@ export default function PlanScreen() {
               
               * {
                 box-sizing: border-box;
+                margin: 0;
+                padding: 0;
               }
               
               body {
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-                padding: 0;
-                margin: 0;
                 color: #2C2C2C;
                 line-height: 1.6;
                 font-size: 14px;
@@ -122,16 +124,17 @@ export default function PlanScreen() {
               
               h2 {
                 color: #2C2C2C;
-                margin-top: 32px;
-                margin-bottom: 16px;
-                font-size: 24px;
+                margin-top: 24px;
+                margin-bottom: 12px;
+                font-size: 22px;
                 font-weight: 600;
                 page-break-after: avoid;
               }
               
               h3 {
                 color: #7A9B8E;
-                margin-bottom: 15px;
+                margin-top: 16px;
+                margin-bottom: 12px;
                 font-size: 18px;
                 font-weight: 600;
                 page-break-after: avoid;
@@ -139,35 +142,75 @@ export default function PlanScreen() {
               
               .subtitle {
                 color: #6B6B6B;
-                margin-bottom: 24px;
+                margin-bottom: 20px;
                 font-size: 14px;
               }
               
               .progress {
                 background-color: #F8F7F5;
-                padding: 16px;
-                border-radius: 8px;
-                margin-bottom: 24px;
+                padding: 14px;
+                border-radius: 6px;
+                margin-bottom: 20px;
                 page-break-inside: avoid;
               }
               
               .disclaimer {
                 background-color: #FFF9F0;
                 border-left: 4px solid #D4A574;
-                padding: 16px;
-                margin-bottom: 24px;
+                padding: 14px;
+                margin-bottom: 20px;
                 font-size: 12px;
                 color: #6B6B6B;
                 page-break-inside: avoid;
               }
               
-              .section {
-                margin-bottom: 30px;
+              .category-section {
+                margin-bottom: 24px;
+                page-break-inside: auto;
+              }
+              
+              .items-container {
+                margin-top: 8px;
+              }
+              
+              .checklist-item {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 8px;
+                page-break-inside: avoid;
+              }
+              
+              .checkbox {
+                margin-right: 10px;
+                font-size: 16px;
+                flex-shrink: 0;
+                width: 20px;
+              }
+              
+              .item-text {
+                flex: 1;
+                font-size: 14px;
+                line-height: 1.5;
+              }
+              
+              .notes-section {
+                margin-top: 24px;
+                page-break-before: auto;
+              }
+              
+              .notes-content {
+                background-color: #F8F7F5;
+                padding: 14px;
+                border-radius: 6px;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                font-size: 14px;
+                line-height: 1.6;
               }
               
               .footer {
-                margin-top: 48px;
-                padding-top: 24px;
+                margin-top: 40px;
+                padding-top: 20px;
                 border-top: 1px solid #E0DDD8;
                 font-size: 12px;
                 color: #6B6B6B;
@@ -187,10 +230,8 @@ export default function PlanScreen() {
               <strong>Progress:</strong> ${completedItems.length} of ${totalItems} items completed (${progressPercent}%)
             </div>
 
-            <div class="section">
-              <h2>Preparation Checklist</h2>
-              ${checklistHTML}
-            </div>
+            <h2>Preparation Checklist</h2>
+            ${checklistHTML}
 
             ${notesHTML}
 
