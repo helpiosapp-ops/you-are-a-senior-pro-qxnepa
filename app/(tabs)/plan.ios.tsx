@@ -62,57 +62,95 @@ export default function PlanScreen() {
           const itemsHTML = items
             .map(
               item => `
-              <div style="margin-bottom: 8px; display: flex; align-items: flex-start;">
-                <span style="margin-right: 8px;">${item.completed ? '✓' : '○'}</span>
-                <span style="color: ${item.completed ? '#6B6B6B' : '#2C2C2C'};">${item.text}</span>
+              <div style="margin-bottom: 10px; display: flex; align-items: flex-start; page-break-inside: avoid;">
+                <span style="margin-right: 10px; font-size: 16px; flex-shrink: 0;">${item.completed ? '✓' : '○'}</span>
+                <span style="color: ${item.completed ? '#6B6B6B' : '#2C2C2C'}; font-size: 14px; line-height: 1.5;">${item.text}</span>
               </div>
             `
             )
             .join('');
 
           return `
-            <div style="margin-bottom: 24px;">
-              <h3 style="color: #7A9B8E; margin-bottom: 12px; font-size: 18px;">${category}</h3>
+            <div style="margin-bottom: 30px; page-break-inside: avoid;">
+              <h3 style="color: #7A9B8E; margin-bottom: 15px; font-size: 18px; font-weight: 600;">${category}</h3>
               ${itemsHTML}
             </div>
           `;
         })
         .join('');
 
+      const notesHTML = notes ? `
+        <div style="page-break-before: auto; margin-top: 30px;">
+          <h2 style="color: #2C2C2C; margin-bottom: 16px; font-size: 24px; font-weight: 600;">Personal Notes</h2>
+          <div style="background-color: #F8F7F5; padding: 16px; border-radius: 8px; white-space: pre-wrap; font-size: 14px; line-height: 1.6;">${notes.replace(/\n/g, '<br/>')}</div>
+        </div>
+      ` : '';
+
       const html = `
         <!DOCTYPE html>
         <html>
           <head>
+            <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Exit Plan - ${pathTitle}</title>
             <style>
+              @page {
+                margin: 0.75in;
+                size: letter;
+              }
+              
+              * {
+                box-sizing: border-box;
+              }
+              
               body {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                padding: 40px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+                padding: 0;
+                margin: 0;
                 color: #2C2C2C;
                 line-height: 1.6;
+                font-size: 14px;
               }
+              
               h1 {
                 color: #7A9B8E;
                 margin-bottom: 8px;
                 font-size: 32px;
+                font-weight: 700;
+                page-break-after: avoid;
               }
+              
               h2 {
                 color: #2C2C2C;
                 margin-top: 32px;
                 margin-bottom: 16px;
                 font-size: 24px;
+                font-weight: 600;
+                page-break-after: avoid;
               }
+              
+              h3 {
+                color: #7A9B8E;
+                margin-bottom: 15px;
+                font-size: 18px;
+                font-weight: 600;
+                page-break-after: avoid;
+              }
+              
               .subtitle {
                 color: #6B6B6B;
                 margin-bottom: 24px;
                 font-size: 14px;
               }
+              
               .progress {
                 background-color: #F8F7F5;
                 padding: 16px;
                 border-radius: 8px;
                 margin-bottom: 24px;
+                page-break-inside: avoid;
               }
+              
               .disclaimer {
                 background-color: #FFF9F0;
                 border-left: 4px solid #D4A574;
@@ -120,13 +158,20 @@ export default function PlanScreen() {
                 margin-bottom: 24px;
                 font-size: 12px;
                 color: #6B6B6B;
+                page-break-inside: avoid;
               }
-              .notes {
-                background-color: #F8F7F5;
-                padding: 16px;
-                border-radius: 8px;
-                margin-top: 24px;
-                white-space: pre-wrap;
+              
+              .section {
+                margin-bottom: 30px;
+              }
+              
+              .footer {
+                margin-top: 48px;
+                padding-top: 24px;
+                border-top: 1px solid #E0DDD8;
+                font-size: 12px;
+                color: #6B6B6B;
+                page-break-inside: avoid;
               }
             </style>
           </head>
@@ -142,26 +187,25 @@ export default function PlanScreen() {
               <strong>Progress:</strong> ${completedItems.length} of ${totalItems} items completed (${progressPercent}%)
             </div>
 
-            <h2>Preparation Checklist</h2>
-            ${checklistHTML}
+            <div class="section">
+              <h2>Preparation Checklist</h2>
+              ${checklistHTML}
+            </div>
 
-            ${
-              notes
-                ? `
-              <h2>Personal Notes</h2>
-              <div class="notes">${notes}</div>
-            `
-                : ''
-            }
+            ${notesHTML}
 
-            <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid #E0DDD8; font-size: 12px; color: #6B6B6B;">
+            <div class="footer">
               Generated by ExitPlanner on ${new Date().toLocaleDateString()}
             </div>
           </body>
         </html>
       `;
 
-      const { uri } = await Print.printToFileAsync({ html });
+      console.log('Generating PDF with full content');
+      const { uri } = await Print.printToFileAsync({ 
+        html,
+        base64: false
+      });
       console.log('PDF generated:', uri);
 
       const canShare = await Sharing.isAvailableAsync();
