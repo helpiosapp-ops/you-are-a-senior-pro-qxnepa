@@ -12,7 +12,6 @@ export interface ChecklistItem {
 export interface ExitPlanData {
   selectedPath: ExitPath | null;
   checklist: ChecklistItem[];
-  notes: string;
   lastUpdated: string;
 }
 

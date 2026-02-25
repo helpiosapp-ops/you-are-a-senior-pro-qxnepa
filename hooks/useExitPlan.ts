@@ -9,7 +9,6 @@ const STORAGE_KEY = '@exitplanner_data';
 const initialData: ExitPlanData = {
   selectedPath: null,
   checklist: [],
-  notes: '',
   lastUpdated: new Date().toISOString(),
 };
 
@@ -66,11 +65,6 @@ export function useExitPlan() {
     await saveData({ ...data, checklist: updatedChecklist });
   };
 
-  const updateNotes = async (notes: string) => {
-    console.log('User updated notes');
-    await saveData({ ...data, notes });
-  };
-
   const resetPlan = async () => {
     console.log('User reset exit plan');
     await saveData(initialData);
@@ -87,7 +81,6 @@ export function useExitPlan() {
     loading,
     selectPath,
     toggleChecklistItem,
-    updateNotes,
     resetPlan,
     getProgress,
   };

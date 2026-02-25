@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TextInput } from 'react-native';
+import React from 'react';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
 import { useExitPlan } from '@/hooks/useExitPlan';
 import { ChecklistSection } from '@/components/ChecklistSection';
@@ -9,20 +9,10 @@ import { colors, typography, spacing, commonStyles } from '@/styles/commonStyles
 import { pathDescriptions } from '@/data/checklistData';
 
 export default function PlanScreen() {
-  const { data, loading, toggleChecklistItem, updateNotes, getProgress } = useExitPlan();
-  const [notes, setNotes] = useState(data.notes);
+  const { data, loading, toggleChecklistItem, getProgress } = useExitPlan();
 
   const selectedPath = data.selectedPath;
   const progressValue = getProgress();
-
-  const handleNotesChange = (text: string) => {
-    setNotes(text);
-  };
-
-  const handleNotesBlur = () => {
-    console.log('User updated notes');
-    updateNotes(notes);
-  };
 
   const groupedChecklist = data.checklist.reduce((acc, item) => {
     if (!acc[item.category]) {
@@ -112,23 +102,6 @@ export default function PlanScreen() {
             </React.Fragment>
           ))}
         </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Personal Notes</Text>
-          <Text style={styles.sectionSubtitle}>
-            Use this space for your thoughts, questions, or reminders
-          </Text>
-          <TextInput
-            style={styles.notesInput}
-            value={notes}
-            onChangeText={handleNotesChange}
-            onBlur={handleNotesBlur}
-            placeholder="Add your notes here..."
-            placeholderTextColor={colors.textSecondary}
-            multiline
-            textAlignVertical="top"
-          />
-        </View>
       </ScrollView>
     </>
   );
@@ -185,24 +158,6 @@ const styles = StyleSheet.create({
     ...typography.h2,
     color: colors.text,
     marginBottom: spacing.xs,
-  },
-  sectionSubtitle: {
-    ...typography.body,
-    color: colors.textSecondary,
-    marginBottom: spacing.md,
-  },
-  notesInput: {
-    backgroundColor: colors.card,
-    borderRadius: 12,
-    padding: spacing.md,
-    ...typography.body,
-    color: colors.text,
-    minHeight: 120,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.03,
-    shadowRadius: 4,
-    elevation: 1,
   },
   emptyContainer: {
     flex: 1,
