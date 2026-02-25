@@ -62,192 +62,167 @@ export default function PlanScreen() {
           const itemsHTML = items
             .map(
               item => `
-              <div class="checklist-item">
-                <span class="checkbox">${item.completed ? '✓' : '○'}</span>
-                <span class="item-text">${item.text}</span>
-              </div>
+              <tr>
+                <td style="padding: 6px 0; vertical-align: top; width: 30px;">
+                  <span style="font-size: 16px;">${item.completed ? '✓' : '○'}</span>
+                </td>
+                <td style="padding: 6px 0; vertical-align: top; line-height: 1.5;">
+                  ${item.text}
+                </td>
+              </tr>
             `
             )
             .join('');
 
           return `
-            <div class="category-section">
-              <h3>${category}</h3>
-              <div class="items-container">
-                ${itemsHTML}
-              </div>
+            <div style="margin-bottom: 20px;">
+              <h3 style="color: #7A9B8E; margin: 12px 0 8px 0; font-size: 18px; font-weight: 600;">${category}</h3>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tbody>
+                  ${itemsHTML}
+                </tbody>
+              </table>
             </div>
           `;
         })
         .join('');
 
       const notesHTML = notes ? `
-        <div class="notes-section">
-          <h2>Personal Notes</h2>
-          <div class="notes-content">${notes.replace(/\n/g, '<br/>')}</div>
+        <div style="margin-top: 24px;">
+          <h2 style="color: #2C2C2C; margin: 20px 0 12px 0; font-size: 22px; font-weight: 600;">Personal Notes</h2>
+          <div style="background-color: #F8F7F5; padding: 14px; border-radius: 6px; white-space: pre-wrap; word-wrap: break-word; font-size: 14px; line-height: 1.6;">
+${notes.replace(/\n/g, '<br/>')}
+          </div>
         </div>
       ` : '';
 
       const html = `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Exit Plan - ${pathTitle}</title>
-            <style>
-              @page {
-                margin: 0.75in;
-                size: letter;
-              }
-              
-              * {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-              }
-              
-              body {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-                color: #2C2C2C;
-                line-height: 1.6;
-                font-size: 14px;
-              }
-              
-              h1 {
-                color: #7A9B8E;
-                margin-bottom: 8px;
-                font-size: 32px;
-                font-weight: 700;
-                page-break-after: avoid;
-              }
-              
-              h2 {
-                color: #2C2C2C;
-                margin-top: 24px;
-                margin-bottom: 12px;
-                font-size: 22px;
-                font-weight: 600;
-                page-break-after: avoid;
-              }
-              
-              h3 {
-                color: #7A9B8E;
-                margin-top: 16px;
-                margin-bottom: 12px;
-                font-size: 18px;
-                font-weight: 600;
-                page-break-after: avoid;
-              }
-              
-              .subtitle {
-                color: #6B6B6B;
-                margin-bottom: 20px;
-                font-size: 14px;
-              }
-              
-              .progress {
-                background-color: #F8F7F5;
-                padding: 14px;
-                border-radius: 6px;
-                margin-bottom: 20px;
-                page-break-inside: avoid;
-              }
-              
-              .disclaimer {
-                background-color: #FFF9F0;
-                border-left: 4px solid #D4A574;
-                padding: 14px;
-                margin-bottom: 20px;
-                font-size: 12px;
-                color: #6B6B6B;
-                page-break-inside: avoid;
-              }
-              
-              .category-section {
-                margin-bottom: 24px;
-                page-break-inside: auto;
-              }
-              
-              .items-container {
-                margin-top: 8px;
-              }
-              
-              .checklist-item {
-                display: flex;
-                align-items: flex-start;
-                margin-bottom: 8px;
-                page-break-inside: avoid;
-              }
-              
-              .checkbox {
-                margin-right: 10px;
-                font-size: 16px;
-                flex-shrink: 0;
-                width: 20px;
-              }
-              
-              .item-text {
-                flex: 1;
-                font-size: 14px;
-                line-height: 1.5;
-              }
-              
-              .notes-section {
-                margin-top: 24px;
-                page-break-before: auto;
-              }
-              
-              .notes-content {
-                background-color: #F8F7F5;
-                padding: 14px;
-                border-radius: 6px;
-                white-space: pre-wrap;
-                word-wrap: break-word;
-                font-size: 14px;
-                line-height: 1.6;
-              }
-              
-              .footer {
-                margin-top: 40px;
-                padding-top: 20px;
-                border-top: 1px solid #E0DDD8;
-                font-size: 12px;
-                color: #6B6B6B;
-                page-break-inside: avoid;
-              }
-            </style>
-          </head>
-          <body>
-            <h1>ExitPlanner</h1>
-            <div class="subtitle">Exit Path: ${pathTitle}</div>
-            
-            <div class="disclaimer">
-              <strong>Disclaimer:</strong> This document provides informational guidance only. It does not constitute legal, financial, or professional advice. Consider consulting qualified professionals for your specific situation.
-            </div>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exit Plan - ${pathTitle}</title>
+  <style>
+    @page {
+      margin: 0.75in;
+      size: letter;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #2C2C2C;
+      line-height: 1.6;
+      font-size: 14px;
+      padding: 0;
+      margin: 0;
+    }
+    
+    h1 {
+      color: #7A9B8E;
+      margin-bottom: 8px;
+      font-size: 32px;
+      font-weight: 700;
+    }
+    
+    h2 {
+      color: #2C2C2C;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    
+    h3 {
+      color: #7A9B8E;
+      margin-top: 16px;
+      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .subtitle {
+      color: #6B6B6B;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    
+    .progress {
+      background-color: #F8F7F5;
+      padding: 14px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+    
+    .disclaimer {
+      background-color: #FFF9F0;
+      border-left: 4px solid #D4A574;
+      padding: 14px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      color: #6B6B6B;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    td {
+      padding: 6px 0;
+      vertical-align: top;
+    }
+    
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #E0DDD8;
+      font-size: 12px;
+      color: #6B6B6B;
+    }
+  </style>
+</head>
+<body>
+  <h1>ExitPlanner</h1>
+  <div class="subtitle">Exit Path: ${pathTitle}</div>
+  
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This document provides informational guidance only. It does not constitute legal, financial, or professional advice. Consider consulting qualified professionals for your specific situation.
+  </div>
 
-            <div class="progress">
-              <strong>Progress:</strong> ${completedItems.length} of ${totalItems} items completed (${progressPercent}%)
-            </div>
+  <div class="progress">
+    <strong>Progress:</strong> ${completedItems.length} of ${totalItems} items completed (${progressPercent}%)
+  </div>
 
-            <h2>Preparation Checklist</h2>
-            ${checklistHTML}
+  <h2>Preparation Checklist</h2>
+  ${checklistHTML}
 
-            ${notesHTML}
+  ${notesHTML}
 
-            <div class="footer">
-              Generated by ExitPlanner on ${new Date().toLocaleDateString()}
-            </div>
-          </body>
-        </html>
+  <div class="footer">
+    Generated by ExitPlanner on ${new Date().toLocaleDateString()}
+  </div>
+</body>
+</html>
       `;
 
-      console.log('Generating PDF with full content');
+      console.log('Generating PDF with full content - all categories included');
+      console.log('Total checklist categories:', Object.keys(groupedChecklist).length);
+      console.log('Total checklist items:', data.checklist.length);
+      
       const { uri } = await Print.printToFileAsync({ 
         html,
-        base64: false
+        base64: false,
+        width: 612,
+        height: 792,
       });
-      console.log('PDF generated:', uri);
+      console.log('PDF generated successfully:', uri);
 
       const canShare = await Sharing.isAvailableAsync();
       if (canShare) {
