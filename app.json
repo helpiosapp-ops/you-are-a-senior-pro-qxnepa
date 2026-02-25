@@ -1,8 +1,8 @@
 
 {
   "expo": {
-    "name": "ExitPlanner",
-    "slug": "exitplanner",
+    "name": "you-are-a-senior-pro",
+    "slug": "you-are-a-senior-pro",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon-bwd.png",
@@ -18,7 +18,6 @@
       "bundleIdentifier": "com.exitplanner.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "NSUserTrackingUsageDescription": "This app does not track you.",
         "NSPhotoLibraryUsageDescription": "This app does not access your photos."
       },
       "buildNumber": "1"
@@ -42,7 +41,7 @@
       "expo-router",
       "expo-web-browser"
     ],
-    "scheme": "exitplanner",
+    "scheme": "you-are-a-senior-pro",
     "experiments": {
       "typedRoutes": true
     },
