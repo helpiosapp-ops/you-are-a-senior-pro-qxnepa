@@ -53,10 +53,7 @@ export default function HomeScreen() {
     <>
       <Stack.Screen
         options={{
-          title: 'ExitPlanner',
-          headerShown: true,
-          headerStyle: { backgroundColor: colors.background },
-          headerTitleStyle: { ...typography.h2, color: colors.text },
+          headerShown: false,
         }}
       />
       <ScrollView style={[commonStyles.container, { paddingTop }]} contentContainerStyle={styles.content}>
