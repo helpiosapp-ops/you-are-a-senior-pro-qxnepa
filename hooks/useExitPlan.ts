@@ -1,15 +1,42 @@
 
 import { useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 import { ExitPlanData, ExitPath, ChecklistItem } from '@/types/ExitPlan';
 import { defaultChecklists } from '@/data/checklistData';
 
-const STORAGE_KEY = '@exitplanner_data';
+const STORAGE_KEY = 'exitplanner_data';
 
 const initialData: ExitPlanData = {
   selectedPath: null,
   checklist: [],
   lastUpdated: new Date().toISOString(),
+};
+
+// Simple storage wrapper that works in Expo Go
+const storage = {
+  async getItem(key: string): Promise<string | null> {
+    try {
+      if (Platform.OS === 'web') {
+        return localStorage.getItem(key);
+      }
+      return await SecureStore.getItemAsync(key);
+    } catch (error) {
+      console.error('Storage getItem error:', error);
+      return null;
+    }
+  },
+  async setItem(key: string, value: string): Promise<void> {
+    try {
+      if (Platform.OS === 'web') {
+        localStorage.setItem(key, value);
+        return;
+      }
+      await SecureStore.setItemAsync(key, value);
+    } catch (error) {
+      console.error('Storage setItem error:', error);
+    }
+  },
 };
 
 export function useExitPlan() {
@@ -23,7 +50,7 @@ export function useExitPlan() {
   const loadData = async () => {
     try {
       console.log('Loading exit plan data from storage');
-      const stored = await AsyncStorage.getItem(STORAGE_KEY);
+      const stored = await storage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
         setData(parsed);
@@ -40,7 +67,7 @@ export function useExitPlan() {
     try {
       console.log('Saving exit plan data:', newData.selectedPath);
       const updated = { ...newData, lastUpdated: new Date().toISOString() };
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      await storage.setItem(STORAGE_KEY, JSON.stringify(updated));
       setData(updated);
     } catch (error) {
       console.error('Error saving exit plan data:', error);
