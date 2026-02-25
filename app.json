@@ -3,7 +3,7 @@
   "expo": {
     "name": "you-are-a-senior-pro",
     "slug": "you-are-a-senior-pro",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon-bwd.png",
     "userInterfaceStyle": "automatic",
@@ -20,7 +20,7 @@
         "ITSAppUsesNonExemptEncryption": false,
         "NSPhotoLibraryUsageDescription": "This app does not access your photos."
       },
-      "buildNumber": "1"
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
@@ -29,7 +29,7 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.exitplanner.app",
-      "versionCode": 1,
+      "versionCode": 2,
       "permissions": []
     },
     "web": {
