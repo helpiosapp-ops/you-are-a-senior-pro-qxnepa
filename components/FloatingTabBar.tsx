@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   View,
@@ -36,6 +37,27 @@ interface FloatingTabBarProps {
   borderRadius?: number;
   bottomMargin?: number;
 }
+
+// Map Material icon names to iOS SF Symbol names
+const getIOSIconName = (iconName: string): string => {
+  const iconMap: Record<string, string> = {
+    'home': 'house.fill',
+    'assignment': 'doc.text.fill',
+    'person': 'person.fill',
+    'settings': 'gear',
+    'search': 'magnifyingglass',
+    'notifications': 'bell.fill',
+    'favorite': 'heart.fill',
+    'menu': 'line.3.horizontal',
+    'check': 'checkmark',
+    'add': 'plus',
+    'delete': 'trash.fill',
+    'edit': 'pencil',
+    'share': 'square.and.arrow.up',
+    'close': 'xmark',
+  };
+  return iconMap[iconName] || iconName;
+};
 
 export default function FloatingTabBar({
   tabs,
@@ -97,8 +119,6 @@ export default function FloatingTabBar({
   const handleTabPress = (route: Href) => {
     router.push(route);
   };
-
-  // Remove unnecessary tabBarStyle animation to prevent flickering
 
   const tabWidthPercent = ((100 / tabs.length) - 1).toFixed(2);
 
@@ -172,19 +192,19 @@ export default function FloatingTabBar({
           <View style={styles.tabsContainer}>
             {tabs.map((tab, index) => {
               const isActive = activeTabIndex === index;
+              const iosIconName = getIOSIconName(tab.icon);
 
               return (
                 <React.Fragment key={index}>
                 <TouchableOpacity
-                  key={index} // Use index as key
                   style={styles.tab}
                   onPress={() => handleTabPress(tab.route)}
                   activeOpacity={0.7}
                 >
-                  <View key={index} style={styles.tabContent}>
+                  <View style={styles.tabContent}>
                     <IconSymbol
                       android_material_icon_name={tab.icon}
-                      ios_icon_name={tab.icon}
+                      ios_icon_name={iosIconName}
                       size={24}
                       color={isActive ? theme.colors.primary : (theme.dark ? '#98989D' : '#000000')}
                     />

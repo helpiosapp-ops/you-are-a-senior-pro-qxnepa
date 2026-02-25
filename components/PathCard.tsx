@@ -14,9 +14,24 @@ interface PathCardProps {
   onPress: () => void;
 }
 
+// Map simple icon names to proper iOS SF Symbol names
+const getIOSIconName = (iconName: string): string => {
+  const iconMap: Record<string, string> = {
+    'person': 'person.fill',
+    'warning': 'exclamationmark.triangle.fill',
+    'description': 'doc.text.fill',
+    'schedule': 'clock.fill',
+    'check': 'checkmark',
+    'home': 'house.fill',
+    'assignment': 'doc.text.fill',
+  };
+  return iconMap[iconName] || iconName;
+};
+
 export function PathCard({ path, title, description, iconName, selected, onPress }: PathCardProps) {
   const borderColor = selected ? colors.primary : colors.border;
   const backgroundColor = selected ? colors.highlight : colors.card;
+  const iosIconName = getIOSIconName(iconName);
 
   return (
     <TouchableOpacity
@@ -26,7 +41,7 @@ export function PathCard({ path, title, description, iconName, selected, onPress
     >
       <View style={styles.iconContainer}>
         <IconSymbol
-          ios_icon_name={iconName}
+          ios_icon_name={iosIconName}
           android_material_icon_name={iconName as any}
           size={32}
           color={selected ? colors.primary : colors.textSecondary}
@@ -39,7 +54,7 @@ export function PathCard({ path, title, description, iconName, selected, onPress
       {selected && (
         <View style={styles.checkmark}>
           <IconSymbol
-            ios_icon_name="check"
+            ios_icon_name="checkmark"
             android_material_icon_name="check"
             size={20}
             color={colors.primary}

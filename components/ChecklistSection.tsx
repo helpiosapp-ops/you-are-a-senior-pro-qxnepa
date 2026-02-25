@@ -39,7 +39,7 @@ export function ChecklistSection({ category, items, onToggle }: ChecklistSection
             <View style={[styles.checkbox, isCompleted && styles.checkboxCompleted]}>
               {isCompleted && (
                 <IconSymbol
-                  ios_icon_name="check"
+                  ios_icon_name="checkmark"
                   android_material_icon_name="check"
                   size={16}
                   color={colors.card}
